@@ -34,61 +34,39 @@ export default async function queueHandler(job: Job, done: DoneCallback) {
         });
         switch (source.type.toLowerCase()) {
           case "website":
-            await websiteQueueController(
-              source,
-            );
+            await websiteQueueController(source);
             break;
           case "text":
-            await textQueueController(
-              source,
-            );
+            await textQueueController(source);
             break;
           case "pdf":
-            await pdfQueueController(
-              source,
-            );
+            await pdfQueueController(source);
             break;
           case "crawl":
-            await crawlQueueController(
-              source,
-            );
+            await crawlQueueController(source);
             break;
 
           case "docx":
-            await DocxQueueController(
-              source,
-            );
+            await DocxQueueController(source);
             break;
 
           case "csv":
-            await csvQueueController(
-              source,
-            );
+            await csvQueueController(source);
             break;
           case "github":
-            await githubQueueController(
-              source,
-            );
+            await githubQueueController(source);
             break;
           case "txt":
-            await txtQueueController(
-              source,
-            );
+            await txtQueueController(source);
             break;
           case "mp3":
-            await audioQueueController(
-              source,
-            );
+            await audioQueueController(source);
             break;
           case "mp4":
-            await videoQueueController(
-              source,
-            );
+            await videoQueueController(source);
             break;
           case "youtube":
-            await youtubeQueueController(
-              source,
-            );
+            await youtubeQueueController(source);
             break;
           case "rest":
             await restQueueController(source);

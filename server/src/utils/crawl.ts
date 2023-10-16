@@ -7,7 +7,7 @@ export const crawl = async (
   link: string,
   maxDepth = 2,
   currentDepth = 0,
-  maxLinks = 20,
+  maxLinks = 20
 ): Promise<Set<string>> => {
   const parentUrl = new URL(link);
 
@@ -30,7 +30,7 @@ export const crawl = async (
 
     const contentType = response.headers["content-type"];
 
-    if (!contentType.includes("text/html")) {
+    if (!contentType || !contentType.includes("text/html")) {
       console.log(`Skipping ${link} (content type: ${contentType})`);
       return new Set();
     }
@@ -63,11 +63,13 @@ export const crawl = async (
         absolute,
         maxDepth,
         currentDepth + 1,
-        maxLinks,
+        maxLinks
       );
       childLinks.forEach((childLink) => fetchedLinks.add(childLink));
     }
+
     fetchedLinks.add(link);
+    console.log(fetchedLinks);
     return fetchedLinks;
   } catch (error: any) {
     console.log(`Error crawling ${link}: ${error?.message}`);

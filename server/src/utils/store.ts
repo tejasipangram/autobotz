@@ -40,8 +40,7 @@ export class DialoqbaseVectorStore extends VectorStore {
         if (row?.embedding) {
           const vector = `[${row.embedding.join(",")}]`;
           const content = row?.content.replace(/\x00/g, "").trim();
-          await prisma
-            .$executeRaw`INSERT INTO "BotDocument" ("content", "embedding", "metadata", "botId", "sourceId") VALUES (${content}, ${vector}::vector, ${row.metadata}, ${row.botId}, ${row.sourceId})`;
+          await prisma.$executeRaw`INSERT INTO "BotDocument" ("content", "embedding", "metadata", "botId", "sourceId") VALUES (${content}, ${vector}::vector, ${row.metadata}, ${row.botId}, ${row.sourceId})`;
         }
       });
     } catch (e) {
@@ -57,7 +56,7 @@ export class DialoqbaseVectorStore extends VectorStore {
   static async fromDocuments(
     docs: Document[],
     embeddings: Embeddings,
-    dbConfig: DialoqbaseLibArgs,
+    dbConfig: DialoqbaseLibArgs
   ) {
     const instance = new this(embeddings, dbConfig);
     await instance.addDocuments(docs);
@@ -68,7 +67,7 @@ export class DialoqbaseVectorStore extends VectorStore {
     texts: string[],
     metadatas: object[] | object,
     embeddings: Embeddings,
-    dbConfig: DialoqbaseLibArgs,
+    dbConfig: DialoqbaseLibArgs
   ) {
     const docs = [];
     for (let i = 0; i < texts.length; i += 1) {
@@ -84,7 +83,7 @@ export class DialoqbaseVectorStore extends VectorStore {
 
   static async fromExistingIndex(
     embeddings: Embeddings,
-    dbConfig: DialoqbaseLibArgs,
+    dbConfig: DialoqbaseLibArgs
   ) {
     const instance = new this(embeddings, dbConfig);
     return instance;
@@ -93,7 +92,7 @@ export class DialoqbaseVectorStore extends VectorStore {
   async similaritySearchVectorWithScore(
     query: number[],
     k: number,
-    filter?: this["FilterType"] | undefined,
+    filter?: this["FilterType"] | undefined
   ): Promise<[Document<Record<string, any>>, number][]> {
     console.log(this.botId);
     const vector = `[${query.join(",")}]`;

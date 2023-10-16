@@ -5,17 +5,14 @@ import * as pdfjS from "pdfjs-dist";
 export class DialoqbasePDFLoader extends BufferLoader {
   private splitPages: boolean;
 
-  constructor(
-    filePathOrBlob: string | Blob,
-    { splitPages = true } = {},
-  ) {
+  constructor(filePathOrBlob: string | Blob, { splitPages = true } = {}) {
     super(filePathOrBlob);
     this.splitPages = splitPages;
   }
 
   public async parse(
     raw: Buffer,
-    metadata: Document["metadata"],
+    metadata: Document["metadata"]
   ): Promise<Document[]> {
     const pdf = await pdfjS.getDocument({
       data: new Uint8Array(raw.buffer),
@@ -35,8 +32,11 @@ export class DialoqbasePDFLoader extends BufferLoader {
         continue;
       }
 
-      const text = content.items.map((item: any) => item.str).join("\n")
-        .replace(/\x00/g, "").trim();
+      const text = content.items
+        .map((item: any) => item.str)
+        .join("\n")
+        .replace(/\x00/g, "")
+        .trim();
       documents.push(
         new Document({
           pageContent: text,
@@ -51,7 +51,7 @@ export class DialoqbasePDFLoader extends BufferLoader {
               pageNumber: i,
             },
           },
-        }),
+        })
       );
     }
 

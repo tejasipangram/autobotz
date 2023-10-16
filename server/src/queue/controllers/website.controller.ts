@@ -7,9 +7,7 @@ import * as fs from "fs/promises";
 import axios from "axios";
 import { DialoqbasePDFLoader } from "../../loader/pdf";
 
-export const websiteQueueController = async (
-  source: QSource,
-) => {
+export const websiteQueueController = async (source: QSource) => {
   // check if url is html or pdf or other
   // if html, use cheerio
 
@@ -43,25 +41,25 @@ export const websiteQueueController = async (
       {
         botId: source.botId,
         sourceId: source.id,
-      },
+      }
     );
   } else {
     const loader = new CheerioWebBaseLoader(source.content!);
-    const docs = await loader.load();
+    const docs: any = await loader.load();
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
     });
     const chunks = await textSplitter.splitDocuments(docs);
-
+    console.log(chunks, "this is chunks");
     await DialoqbaseVectorStore.fromDocuments(
       chunks,
       embeddings(source.embedding),
       {
         botId: source.botId,
         sourceId: source.id,
-      },
+      }
     );
   }
 };
